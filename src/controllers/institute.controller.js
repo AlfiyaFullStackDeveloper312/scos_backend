@@ -3,13 +3,16 @@ const instituteModel = require("../models/institute.model");
 // CREATE
 exports.createInstitute = async (req, res) => {
   try {
-    const { tenant_id, name, code, type } = req.body;
+    const { tenant_id, name, code, type, inst_location, inst_logo } = req.body;
 
     const institute = await instituteModel.createInstitute({
       tenant_id,
       name,
       code,
       type,
+      inst_location,
+      inst_logo,
+      status: "active",
     });
 
     res.json({

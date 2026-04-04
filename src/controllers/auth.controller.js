@@ -5,8 +5,7 @@ const authModel = require("../models/auth.model");
 
 const SECRET = "secretkey";
 
-
-// ✅ LOGIN
+// LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -36,7 +35,7 @@ exports.login = async (req, res) => {
         token_type: "pre_context",
       },
       SECRET,
-      { expiresIn: "8h" }
+      { expiresIn: "8h" },
     );
 
     res.json({
@@ -49,7 +48,6 @@ exports.login = async (req, res) => {
         email: user.email,
       },
     });
-
   } catch (err) {
     console.log("LOGIN ERROR:", err);
     res.json({
@@ -59,9 +57,7 @@ exports.login = async (req, res) => {
   }
 };
 
-
-
-// ✅ GET INSTITUTES + ROLES
+//  GET INSTITUTES + ROLES
 exports.getMyInstitutesRoles = async (req, res) => {
   try {
     const user_id = req.user.user_id;
@@ -75,7 +71,11 @@ exports.getMyInstitutesRoles = async (req, res) => {
         grouped[row.institute_id] = {
           tenant_id: row.tenant_id,
           institute_id: row.institute_id,
-          institute_name: row.institute_name,
+          //   institute_name: row.institute_name,
+        name: row.name,
+inst_location: row.inst_location,
+inst_logo: row.inst_logo,
+          type: row.type,
           roles: [],
         };
       }
@@ -90,7 +90,6 @@ exports.getMyInstitutesRoles = async (req, res) => {
       success: true,
       data: Object.values(grouped),
     });
-
   } catch (err) {
     console.log("GET INSTITUTES ERROR:", err);
 
@@ -100,10 +99,7 @@ exports.getMyInstitutesRoles = async (req, res) => {
     });
   }
 };
-
-
-
-// ✅ SELECT CONTEXT
+//  SELECT CONTEXT
 exports.selectContext = async (req, res) => {
   try {
     const { tenant_id, institute_id, role_id } = req.body;
@@ -113,9 +109,8 @@ exports.selectContext = async (req, res) => {
       user_id,
       tenant_id,
       institute_id,
-      role_id
+      role_id,
     );
-
     if (!check) {
       return res.json({
         success: false,
@@ -132,7 +127,7 @@ exports.selectContext = async (req, res) => {
         token_type: "access",
       },
       SECRET,
-      { expiresIn: "8h" }
+      { expiresIn: "8h" },
     );
 
     res.json({
@@ -145,7 +140,6 @@ exports.selectContext = async (req, res) => {
         role_id,
       },
     });
-
   } catch (err) {
     console.log("SELECT CONTEXT ERROR:", err);
 
@@ -156,9 +150,7 @@ exports.selectContext = async (req, res) => {
   }
 };
 
-
-
-// ✅ GET CURRENT USER
+//  GET CURRENT USER
 exports.getMe = async (req, res) => {
   try {
     res.json({
@@ -173,9 +165,7 @@ exports.getMe = async (req, res) => {
   }
 };
 
-
-
-// ✅ LOGOUT (dummy)
+//  LOGOUT
 exports.logout = async (req, res) => {
   res.json({
     success: true,

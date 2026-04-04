@@ -6,14 +6,14 @@ exports.createUser = async (req, res) => {
   try {
     const { first_name, last_name, email, mobile, password } = req.body;
 
-    const hash = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await userModel.createUser({
       first_name,
       last_name,
       email,
       mobile,
-      password_hash: hash,
+      password_hash: hashedPassword,
     });
 
     res.json({
@@ -28,7 +28,6 @@ exports.createUser = async (req, res) => {
     });
   }
 };
-
 // GET USERS
 exports.getUsers = async (req, res) => {
   try {
