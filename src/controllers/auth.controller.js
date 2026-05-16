@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     const user = await authModel.getUserByEmail(email);
 
     if (!user) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid credentials",
       });
@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid credentials",
       });
@@ -50,14 +50,14 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     console.log("LOGIN ERROR:", err);
-    res.json({
+    res.status(500).json({
       success: false,
       message: "Login failed",
     });
   }
 };
 
-//  GET INSTITUTES + ROLES
+//  GET INSTITUTES  and ROLES
 exports.getMyInstitutesRoles = async (req, res) => {
   try {
     const user_id = req.user.user_id;
@@ -71,10 +71,9 @@ exports.getMyInstitutesRoles = async (req, res) => {
         grouped[row.institute_id] = {
           tenant_id: row.tenant_id,
           institute_id: row.institute_id,
-          //   institute_name: row.institute_name,
-        name: row.name,
-inst_location: row.inst_location,
-inst_logo: row.inst_logo,
+          name: row.name,
+          inst_location: row.inst_location,
+          inst_logo: row.inst_logo,
           type: row.type,
           roles: [],
         };
@@ -117,7 +116,6 @@ exports.selectContext = async (req, res) => {
         message: "Invalid context",
       });
     }
-
     const accessToken = jwt.sign(
       {
         user_id,
@@ -129,7 +127,6 @@ exports.selectContext = async (req, res) => {
       SECRET,
       { expiresIn: "8h" },
     );
-
     res.json({
       success: true,
       message: "Context selected",
@@ -149,7 +146,6 @@ exports.selectContext = async (req, res) => {
     });
   }
 };
-
 //  GET CURRENT USER
 exports.getMe = async (req, res) => {
   try {
@@ -164,7 +160,6 @@ exports.getMe = async (req, res) => {
     });
   }
 };
-
 //  LOGOUT
 exports.logout = async (req, res) => {
   res.json({

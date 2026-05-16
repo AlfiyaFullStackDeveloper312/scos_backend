@@ -8,7 +8,7 @@ exports.createMapping = async (data) => {
     `INSERT INTO user_institute_roles
     (tenant_id, user_id, institute_id, role_id, is_primary, status)
     VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-    [tenant_id, user_id, institute_id, role_id, is_primary, "active"]
+    [tenant_id, user_id, institute_id, role_id, is_primary, "active"],
   );
 
   return res.rows[0];
@@ -31,7 +31,7 @@ exports.getAllMappings = async () => {
     FROM user_institute_roles uir
     JOIN users u ON u.id = uir.user_id
     JOIN institutes i ON i.id = uir.institute_id
-    JOIN roles r ON r.id = uir.role_id`
+    JOIN roles r ON r.id = uir.role_id`,
   );
 
   return res.rows;

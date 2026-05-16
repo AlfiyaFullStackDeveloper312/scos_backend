@@ -8,7 +8,7 @@ const authMiddleware = (requiredType = null) => {
       const authHeader = req.headers.authorization;
 
       if (!authHeader) {
-        return res.json({
+        return res.status(401).json({
           success: false,
           message: "No token provided",
         });
@@ -18,7 +18,7 @@ const authMiddleware = (requiredType = null) => {
       const decoded = jwt.verify(token, SECRET);
 
       if (requiredType && decoded.token_type !== requiredType) {
-        return res.json({
+        return res.status(401).json({
           success: false,
           message: "Invalid token type",
         });
@@ -27,7 +27,7 @@ const authMiddleware = (requiredType = null) => {
       req.user = decoded;
       next();
     } catch (err) {
-      return res.json({
+      return res.status(401).json({
         success: false,
         message: "Invalid token",
       });
